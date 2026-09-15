@@ -279,7 +279,7 @@ def is_fresh(post: dict[str, Any], max_age_hours: int) -> bool:
 
 
 def run(args: argparse.Namespace) -> int:
-    handle = os.environ.get("BSKY_HANDLE", DEFAULT_HANDLE)
+    handle = os.environ.get("BSKY_HANDLE") or DEFAULT_HANDLE
     webhook = os.environ.get("DISCORD_WEBHOOK_URL", "").strip()
     role_id = os.environ.get("PING_ROLE_ID", "").strip()
     # "all"      -> ping on every post that clears the filter
