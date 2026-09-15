@@ -1,0 +1,71 @@
+name: RapSheet to Discord
+
+on:
+  schedule:
+    # Every 5 minutes. GitHub's scheduler is best-effort and often runs late
+    # (5-20 min) when its queues are busy — see the README.
+    - cron: "*/5 * * * *"
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Classify and print, post nothing"
+        type: boolean
+        default: false
+      backfill:
+        description: "Post the N most recent matching posts, ignoring state"
+        type: string
+        default: "0"
+
+# Never let two runs race on state.json.
+concurrency:
+  group: rapsheet-poll
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  poll:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Classifier self-test
+        run: python bot.py --selftest
+
+      - name: Poll and post
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          # Analytics Dept. role in Alec's server. Override with a repo variable.
+          PING_ROLE_ID: ${{ vars.PING_ROLE_ID || '1532331208506347520' }}
+          PING_MODE: ${{ vars.PING_MODE || 'all' }}
+          BSKY_HANDLE: ${{ vars.BSKY_HANDLE }}
+          MAX_AGE_HOURS: ${{ vars.MAX_AGE_HOURS }}
+        run: |
+          ARGS=""
+          if [ "${{ inputs.dry_run }}" = "true" ]; then ARGS="--dry-run"; fi
+          if [ -n "${{ inputs.backfill }}" ] && [ "${{ inputs.backfill }}" != "0" ]; then
+            ARGS="$ARGS --backfill ${{ inputs.backfill }}"
+          fi
+          python bot.py $ARGS
+
+      - name: Save state
+        if: ${{ inputs.dry_run != true }}
+        run: |
+          if git diff --quiet -- state.json; then
+            echo "No state change."
+            exit 0
+          fi
+          git config user.name  "rapsheet-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add state.json
+          git commit -m "state [skip ci]"
+          # Another run may have pushed while we worked; rebase and retry once.
+          git pull --rebase --autostash || true
+          git push
