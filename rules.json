@@ -77,8 +77,8 @@
         "\\b(fully )?guaranteed\\b",
         "\\bactivat(e|ed|ing|ion)\\b",
         "\\bpractice squad\\b",
-        "\\b(first|second|third|fourth|fifth|sixth|seventh)[\\s-]round(er)?\\b",
-        "\\b\\d(st|nd|rd|th)[\\s-]round(er)?\\b",
+        "\\b(first|second|third|fourth|fifth|sixth|seventh)[\\s-]round pick\\b",
+        "\\b\\d(st|nd|rd|th)[\\s-]round pick\\b",
         "\\bdraft pick\\b",
         "\\bvisit(ing|ed)? with the\\b",
         "\\bworkout\\b.{0,15}\\b(scheduled|set|booked)\\b"
