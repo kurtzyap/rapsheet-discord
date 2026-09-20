@@ -73,8 +73,11 @@
   "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mvve4c2z3s2e",
   "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mvviehegac2e",
   "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mvxgzppzkk2e",
-  "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mvxh4umbbc2e"
+  "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mvxh4umbbc2e",
+  "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mvxh7axbzk2e",
+  "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mvxhav3mqk2e",
+  "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mvxhdot4gs2e"
  ],
  "bootstrapped": true,
- "last_run": "2026-09-20T14:52:43.862419+00:00"
+ "last_run": "2026-09-20T14:59:47.171366+00:00"
 }
